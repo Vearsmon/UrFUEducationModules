@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@model IQueryable<Core.Objects.ModuleEntity>
+
+@{
+    ViewData["Title"] = "Модули";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <button class="button-9" role="button" id="add-module">Добавить модуль</button>
+}
+
+@* Табличка модулей, по большей части просто висит, но оживляется JS кодом. Идентификатор нужен просто, чтобы на экране не было так пусто :D *@
+<div class="table100 ver1 m-b-110">
+    <table data-vertable="ver1">
+        <thead>
+        <tr class="row100 head">
+            <th class="column100 column1" data-column="column1">Идентификатор</th>
+            <th class="column100 column2" data-column="column2">Название</th>
+            <th class="column100 column3" data-column="column3">Тип модуля</th>
+        </tr>
+        @foreach (var program in Model)
+        {
+            <tr class="program-row row100">
+                <td class="column100 column1" data-column="column1">@program.Uuid</td>
+                <td class="column100 column2 moduleTitle" data-column="column2" id="@program.Uuid">@program.Title</td>
+                <td class="column100 column3" data-column="column3">@program.Type</td>
+            </tr>
+        }
+    </table>
+</div>
+
+@* Формочка для управления модулем, нужна для того же, что и в Index.cshtml *@
+<div hidden="hidden" class="module-add-window">
+    <div class="module-add-window-background-shadow"></div>
+    <div class="module-add-window-form-container">
+        <div class="module-add-window-form">
+            <div class="module-uuid field">
+                <label hidden="hidden">Идентификатор</label>
+                <div id="module-uuid"></div>
+            </div>
+            <div class="module-title field">
+                <label>Название</label>
+                <div id="module-title"></div>
+            </div>
+            <div class="module-type field">
+                <label>Тип модуля</label>
+                <div id="module-type"></div>
+            </div>
+            <br>
+            <button class="button-9" role="button" type="submit" id="save-module">Сохранить</button>
+        </div>
+    </div>
+</div>

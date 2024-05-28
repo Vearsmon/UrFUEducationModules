@@ -1,0 +1,108 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Globalization
+@inject SignInManager<IdentityUser> SignInManager
+@model IQueryable<Core.Objects.ProgramEntity>
+
+@{
+    ViewData["Title"] = "Образовательные программы";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <button class="button-9" role="button" id="add-program">Добавить программу</button>
+}
+
+@* табличка для данных ОП. Дополняется через скрипты, которые стучатся в API *@
+<div class="table100 ver1 m-b-110">
+    <table data-vertable="ver1">
+        <thead>
+            <tr class="row100 head">
+                <th class="column100 column1" data-column="column1">Название</th>
+                <th class="column100 column2" data-column="column2">Статус</th>
+                <th class="column100 column3" data-column="column3">Шифр</th>
+                <th class="column100 column4" data-column="column4">Уровень обучения</th>
+                <th class="column100 column5" data-column="column5">Стандарт обучения</th>
+                <th class="column100 column6" data-column="column6">Институт</th>
+                <th class="column100 column7" data-column="column7">Ответственное лицо</th>
+                <th class="column100 column8" data-column="column8">Следующая аккредитация</th>
+            </tr>
+        </thead>
+        @foreach (var program in Model)
+        {
+            <tr class="program-row row100">
+                <td class="column100 column1 eduProgram" data-column="column1" id="@program.Uuid">@program.Title</td>
+                <td class="column100 column2" data-column="column2">@program.Status</td>
+                <td class="column100 column3" data-column="column3">@program.Cypher</td>
+                <td class="column100 column4" data-column="column4">@program.Level</td>
+                <td class="column100 column5" data-column="column5">@program.Standard</td>
+                <td class="column100 column6 institute-table" data-column="column6">@program.Institute</td>
+                <td class="column100 column7 head-table" data-column="column7">@program.Head</td>
+                <td class="column100 column8" data-column="column8">@program.AccreditationTime.ToString(CultureInfo.CurrentCulture)[..11]</td>
+            </tr>
+        }
+    </table>
+</div>
+
+@* спрятанная форма управления ОП, чтобы не создавать ее в коде JS, а дополнять и уже потом показывать *@
+<div hidden="hidden" class="details-window">
+    <div class="details-window-background-shadow"></div>
+    <div class="details-window-form-container">
+        <div class="details-window-form">
+            <div class="uuid field">
+                <label hidden="hidden">Идентификатор</label>
+                <div id="uuid"></div>
+            </div>
+            <div class="title field">
+                <label>Название</label>
+                <div id="title"></div>
+            </div>
+            <div class="status field">
+                <label>Статус</label>
+                <div id="status"></div>
+            </div>
+            <div class="cypher field">
+                <label>Шифр</label>
+                <div id="cypher"></div>
+            </div>
+            <div class="level field">
+                <label>Уровень обучения</label>
+                <div id="level"></div>
+            </div>
+            <div class="standard field">
+                <label>Стандарт обучения</label>
+                <div id="standard"></div>
+            </div>
+            <div class="institute field">
+                <label>Институт</label>
+                <div id="institute"></div>
+            </div>
+            <div class="head field">
+                <label>Ответственное лицо</label>
+                <div id="head"></div>
+            </div>
+            <div class="accreditationTime field">
+                <label>Следующая аккредитация</label>
+                <div id="accreditationTime"></div>
+            </div>
+            <br>
+            
+            <div class="form_label">
+                <span class="form_text">Связанные модули</span>
+                <div class="multiselect_block">
+                    <label for="select-1" class="field_multiselect">Выберите модуль</label>
+                    <input id="checkbox-1" class="multiselect_checkbox" type="checkbox">
+                    <label for="checkbox-1" class="multiselect_label"></label>
+                    <select id="select-1" class="field_select" name="technology" multiple>
+                            
+                    </select>
+                    <span class="field_multiselect_help">Для множественного выбора удерживайте <b>Ctrl</b></span>
+                </div>
+                <span class="error_text"></span>
+            </div>
+            
+            <button class="button-9" role="button" type="submit" id="save-program">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+

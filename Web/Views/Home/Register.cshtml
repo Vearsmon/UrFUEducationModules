@@ -1,0 +1,27 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+@* Форма регистрации *@
+<form asp-area="" asp-controller="Api" asp-action="Register" method="post" asp-route-returnUrl="@ViewBag.returnUrl">
+    <div>
+        <label asp-for="UserName">Имя пользователя</label>
+        <input asp-for="UserName"/>
+        <span asp-validation-for="UserName"></span>
+    </div>
+    <div>
+        <label asp-for="Password">Пароль</label>
+        <input asp-for="Password"/>
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="PasswordConfirm">Подтвердите пароль</label>
+        <input asp-for="PasswordConfirm"/>
+        <span asp-validation-for="PasswordConfirm"></span>
+    </div>
+    <div>
+        <input type="submit" value="Зарегистрироваться">
+    </div>
+</form>
